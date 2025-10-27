@@ -38,6 +38,15 @@ local function treesitter_parser_available(ft)
   return res and parser ~= nil
 end
 
+--- Check if a treesitter query is available
+---@param ft string
+---@param query_name string
+---@return boolean
+local function treesitter_query_available(ft, query_name)
+  local query = vim.treesitter.query.get(ft, query_name)
+  return query ~= nil
+end
+
 function M.check()
   start('CopilotChat.nvim [core]')
 
@@ -48,11 +57,11 @@ function M.check()
     error('nvim: unsupported, please upgrade to 0.10.0 or later. See "https://neovim.io/".')
   end
 
-  local setup_called = require('CopilotChat').config ~= nil
-  if setup_called then
-    ok('setup: called')
+  local initialized = require('CopilotChat').initialized
+  if initialized then
+    ok('initialized: true')
   else
-    error('setup: not called, required for plugin to work. See `:h CopilotChat-installation`.')
+    error('initialized: false, something went wrong. See `:h CopilotChat-installation`.')
   end
 
   local testfile = os.tmpname()
@@ -145,8 +154,16 @@ function M.check()
   if treesitter_parser_available('markdown') then
     ok('treesitter[markdown]: installed')
   else
-    warn(
-      'treesitter[markdown]: missing, optional for better chat highlighting. Install `nvim-treesitter/nvim-treesitter` plugin and run `:TSInstall markdown`.'
+    error(
+      'treesitter[markdown]: missing, required for chat parsing. Install `nvim-treesitter/nvim-treesitter` plugin and run `:TSInstall markdown`.'
+    )
+  end
+
+  if treesitter_query_available('markdown', 'copilotchat') then
+    ok('treesitter[markdown/copilotchat]: found')
+  else
+    error(
+      'treesitter[markdown/copilotchat]: missing, required for chat parsing. See `:h CopilotChat-installation` for instructions.'
     )
   end
 

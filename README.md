@@ -19,11 +19,12 @@ https://github.com/user-attachments/assets/8cad5643-63b2-4641-a5c4-68bc313f20e6
 CopilotChat.nvim brings GitHub Copilot Chat capabilities directly into Neovim with a focus on transparency and user control.
 
 - 🤖 **Multiple AI Models** - GitHub Copilot (including GPT-4o, Gemini 2.5 Pro, Claude 4 Sonnet, Claude 3.7 Sonnet, Claude 3.5 Sonnet, o3-mini, o4-mini) + custom providers (Ollama, Mistral.ai). The exact list of available models depends on your [GitHub Copilot settings](https://github.com/settings/copilot/features) and the models provided by GitHub's API.
-- 🔧 **Tool Calling** - LLM can use workspace functions (file reading, git operations, search) with your explicit approval
-- 🔒 **Explicit Control** - Only shares what you specifically request - no background data collection
-- 📝 **Interactive Chat** - Rich UI with completion, diffs, and quickfix integration
+- 🔧 **Tool Calling** - LLM can call workspace functions (file reading, git operations, search) with your explicit approval
+- 🔒 **Privacy First** - Only shares what you explicitly request - no background data collection
+- 📝 **Interactive Chat** - Interactive UI with completion, diffs, and quickfix integration
 - 🎯 **Smart Prompts** - Composable templates and sticky prompts for consistent context
-- ⚡ **Efficient** - Smart token usage with tiktoken counting and history management
+- ⚡ **Token Efficient** - Resource replacement prevents duplicate context, history management via tiktoken counting
+- 🔗 **Scriptable** - Comprehensive Lua API for automation and headless mode operation
 - 🔌 **Extensible** - [Custom functions](https://github.com/CopilotC-Nvim/CopilotChat.nvim/discussions/categories/functions) and [providers](https://github.com/CopilotC-Nvim/CopilotChat.nvim/discussions/categories/providers), plus integrations like [mcphub.nvim](https://github.com/ravitemer/mcphub.nvim)
 
 # Installation
@@ -109,11 +110,11 @@ EOF
 
 # Sticky prompt that persists
 
-> #buffer:current
+> #buffer:active
 > You are a helpful coding assistant
 ```
 
-When you use `@copilot`, the LLM can call functions like `glob`, `file`, `gitdiff` etc. You'll see the proposed function call and can approve/reject it before execution.
+When you use `@copilot`, the LLM can call functions like `bash`, `edit`, `file`, `glob`, `grep`, `gitdiff` etc. You'll see the proposed function call and can approve/reject it before execution.
 
 # Usage
 
@@ -142,7 +143,6 @@ When you use `@copilot`, the LLM can call functions like `glob`, `file`, `gitdif
 | `<C-l>` | `<C-l>` | Reset and clear the chat window            |
 | `<C-s>` | `<CR>`  | Submit the current prompt                  |
 | -       | `grr`   | Toggle sticky prompt for line under cursor |
-| -       | `grx`   | Clear all sticky prompts in prompt         |
 | `<C-y>` | `<C-y>` | Accept nearest diff                        |
 | -       | `gj`    | Jump to section of nearest diff            |
 | -       | `gqa`   | Add all answers from chat to quickfix list |
@@ -167,20 +167,23 @@ When you use `@copilot`, the LLM can call functions like `glob`, `file`, `gitdif
 
 All predefined functions belong to the `copilot` group.
 
-| Function      | Description                                      | Example Usage          |
-| ------------- | ------------------------------------------------ | ---------------------- |
-| `buffer`      | Retrieves content from a specific buffer         | `#buffer`              |
-| `buffers`     | Fetches content from multiple buffers            | `#buffers:visible`     |
-| `diagnostics` | Collects code diagnostics (errors, warnings)     | `#diagnostics:current` |
-| `file`        | Reads content from a specified file path         | `#file:path/to/file`   |
-| `gitdiff`     | Retrieves git diff information                   | `#gitdiff:staged`      |
-| `gitstatus`   | Retrieves git status information                 | `#gitstatus`           |
-| `glob`        | Lists filenames matching a pattern in workspace  | `#glob:**/*.lua`       |
-| `grep`        | Searches for a pattern across files in workspace | `#grep:TODO`           |
-| `quickfix`    | Includes content of files in quickfix list       | `#quickfix`            |
-| `register`    | Provides access to specified Vim register        | `#register:+`          |
-| `selection`   | Includes the current visual selection            | `#selection`           |
-| `url`         | Fetches content from a specified URL             | `#url:https://...`     |
+| Function    | Type     | Description                                            | Example Usage        |
+| ----------- | -------- | ------------------------------------------------------ | -------------------- |
+| `bash`      | Tool     | Executes a bash command and returns output             | `@copilot` only      |
+| `buffer`    | Resource | Retrieves content from buffer(s) with diagnostics      | `#buffer:active`     |
+| `clipboard` | Resource | Provides access to system clipboard content            | `#clipboard`         |
+| `edit`      | Tool     | Applies a unified diff to a file                       | `@copilot` only      |
+| `file`      | Resource | Reads content from a specified file path               | `#file:path/to/file` |
+| `gitdiff`   | Resource | Retrieves git diff information                         | `#gitdiff:staged`    |
+| `glob`      | Resource | Lists filenames matching a pattern in workspace        | `#glob:**/*.lua`     |
+| `grep`      | Resource | Searches for a pattern across files in workspace       | `#grep:TODO`         |
+| `selection` | Resource | Includes the current visual selection with diagnostics | `#selection`         |
+| `url`       | Resource | Fetches content from a specified URL                   | `#url:https://...`   |
+
+**Type Legend:**
+
+- **Resource**: Can be used manually via `#function` syntax
+- **Tool**: Can only be called by LLM via `@copilot` (for safety/complexity reasons)
 
 ## Predefined Prompts
 
@@ -394,9 +397,6 @@ local chat = require("CopilotChat")
 -- Basic Chat Functions
 chat.ask(prompt, config)      -- Ask a question with optional config
 chat.response()               -- Get the last response text
-chat.resolve_prompt()         -- Resolve prompt references
-chat.resolve_tools()          -- Resolve tools that are available for automatic use by LLM
-chat.resolve_model()          -- Resolve model from prompt (WARN: async, requires plenary.async.run)
 
 -- Window Management
 chat.open(config)             -- Open chat window with optional config
@@ -404,10 +404,6 @@ chat.close()                  -- Close chat window
 chat.toggle(config)           -- Toggle chat window visibility with optional config
 chat.reset()                  -- Reset the chat
 chat.stop()                   -- Stop current output
-
--- Source Management
-chat.get_source()             -- Get the current source buffer and window
-chat.set_source(winnr)        -- Set the source window
 
 -- Prompt & Model Management
 chat.select_prompt(config)    -- Open prompt selector with optional config
@@ -438,7 +434,6 @@ window:get_message(role, cursor)               -- Get chat message by role, eith
 window:add_message({ role, content }, replace) -- Add or replace a message in chat
 window:remove_message(role, cursor)            -- Remove chat message by role, either last or closest to cursor
 window:get_block(role, cursor)                 -- Get code block by role, either last or closest to cursor
-window:add_sticky(sticky)                      -- Add sticky prompt to chat message
 
 -- Content Management
 window:append(text)          -- Append text to chat window
@@ -446,12 +441,26 @@ window:clear()               -- Clear chat window content
 window:start()               -- Start writing to chat window
 window:finish()              -- Finish writing to chat window
 
+-- Source Management
+window.get_source()          -- Get the current source buffer and window
+window.set_source(winnr)     -- Set the source window
+
 -- Navigation
 window:follow()              -- Move cursor to end of chat content
 window:focus()               -- Focus the chat window
 
 -- Advanced Features
 window:overlay(opts)         -- Show overlay with specified options
+```
+
+## Prompt parser
+
+```lua
+local parser = require("CopilotChat.prompts")
+
+parser.resolve_prompt()         -- Resolve prompt references
+parser.resolve_tools()          -- Resolve tools that are available for automatic use by LLM
+parser.resolve_model()          -- Resolve model from prompt (WARN: async, requires plenary.async.run)
 ```
 
 ## Example Usage
@@ -513,6 +522,14 @@ make test
 5. Submit a pull request
 
 See [CONTRIBUTING.md](/CONTRIBUTING.md) for detailed guidelines.
+
+# Acknowledgments
+
+## diff-match-patch
+
+CopilotChat.nvim includes [diff-match-patch (Lua port)](https://github.com/google/diff-match-patch) for diffing and patching functionality.  
+Copyright 2018 The diff-match-patch Authors.  
+Licensed under the Apache License 2.0.
 
 # Contributors
 

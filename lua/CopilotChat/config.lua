@@ -14,15 +14,16 @@
 ---@field blend number?
 
 ---@class CopilotChat.config.Shared
----@field system_prompt nil|string|fun(source: CopilotChat.source):string
+---@field system_prompt nil|string
 ---@field model string?
 ---@field tools string|table<string>|nil
 ---@field resources string|table<string>|nil
 ---@field sticky string|table<string>|nil
+---@field diff 'block'|'unified'?
 ---@field language string?
 ---@field temperature number?
 ---@field headless boolean?
----@field callback nil|fun(response: CopilotChat.client.Message, source: CopilotChat.source)
+---@field callback nil|fun(response: CopilotChat.client.Message, source: CopilotChat.ui.chat.Source)
 ---@field remember_as_sticky boolean?
 ---@field window CopilotChat.config.Window?
 ---@field show_help boolean?
@@ -62,6 +63,7 @@ return {
   tools = nil, -- Default tool or array of tools (or groups) to share with LLM (can be specified manually in prompt via @).
   resources = 'selection', -- Default resources to share with LLM (can be specified manually in prompt via #).
   sticky = nil, -- Default sticky prompt or array of sticky prompts to use at start of every new chat (can be specified manually in prompt via >).
+  diff = 'block', -- Default diff format to use, 'block' or 'unified'.
   language = 'English', -- Default language to use for answers
 
   temperature = 0.1, -- Result temperature
@@ -110,9 +112,9 @@ return {
   history_path = vim.fn.stdpath('data') .. '/copilotchat_history', -- Default path to stored history
 
   headers = {
-    user = '## User ', -- Header to use for user questions
-    assistant = '## Copilot ', -- Header to use for AI answers
-    tool = '## Tool ', -- Header to use for tool calls
+    user = 'User', -- Header to use for user questions
+    assistant = 'Copilot', -- Header to use for AI answers
+    tool = 'Tool', -- Header to use for tool calls
   },
 
   separator = '───', -- Separator to use in chat
