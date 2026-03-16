@@ -466,6 +466,48 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/49014608?v=4",
       "profile": "https://github.com/ctchen222",
       "contributions": ["code"]
+    },
+    {
+      "login": "towoe",
+      "name": "Tobias Wölfel",
+      "avatar_url": "https://avatars.githubusercontent.com/u/8666134?v=4",
+      "profile": "https://github.com/towoe",
+      "contributions": ["code"]
+    },
+    {
+      "login": "garcia5",
+      "name": "Alexander Garcia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/21695295?v=4",
+      "profile": "https://github.com/garcia5",
+      "contributions": ["code"]
+    },
+    {
+      "login": "kharandziuk",
+      "name": "Max Kharandziuk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/3404755?v=4",
+      "profile": "https://github.com/kharandziuk",
+      "contributions": ["code"]
+    },
+    {
+      "login": "pxwg",
+      "name": "Xinyu Xiang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/149765160?v=4",
+      "profile": "https://github.com/pxwg",
+      "contributions": ["code"]
+    },
+    {
+      "login": "junqizhang",
+      "name": "junqizhang",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22600124?v=4",
+      "profile": "https://github.com/junqizhang",
+      "contributions": ["code"]
+    },
+    {
+      "login": "Tlunch",
+      "name": "Calum Lynch",
+      "avatar_url": "https://avatars.githubusercontent.com/u/89159592?v=4",
+      "profile": "http://card.calumhub.xyz",
+      "contributions": ["code"]
     }
   ],
   "contributorsPerLine": 7,

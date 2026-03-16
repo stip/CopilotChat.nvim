@@ -396,7 +396,6 @@ local chat = require("CopilotChat")
 
 -- Basic Chat Functions
 chat.ask(prompt, config)      -- Ask a question with optional config
-chat.response()               -- Get the last response text
 
 -- Window Management
 chat.open(config)             -- Open chat window with optional config
@@ -523,14 +522,6 @@ make test
 
 See [CONTRIBUTING.md](/CONTRIBUTING.md) for detailed guidelines.
 
-# Acknowledgments
-
-## diff-match-patch
-
-CopilotChat.nvim includes [diff-match-patch (Lua port)](https://github.com/google/diff-match-patch) for diffing and patching functionality.  
-Copyright 2018 The diff-match-patch Authors.  
-Licensed under the Apache License 2.0.
-
 # Contributors
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
@@ -625,6 +616,14 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/samiulsami"><img src="https://avatars.githubusercontent.com/u/33352407?v=4?s=100" width="100px;" alt="Samiul Islam"/><br /><sub><b>Samiul Islam</b></sub></a><br /><a href="https://github.com/CopilotC-Nvim/CopilotChat.nvim/commits?author=samiulsami" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://ruicsh.github.io"><img src="https://avatars.githubusercontent.com/u/8294038?v=4?s=100" width="100px;" alt="Rui Costa"/><br /><sub><b>Rui Costa</b></sub></a><br /><a href="https://github.com/CopilotC-Nvim/CopilotChat.nvim/commits?author=ruicsh" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ctchen222"><img src="https://avatars.githubusercontent.com/u/49014608?v=4?s=100" width="100px;" alt="CTCHEN"/><br /><sub><b>CTCHEN</b></sub></a><br /><a href="https://github.com/CopilotC-Nvim/CopilotChat.nvim/commits?author=ctchen222" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/towoe"><img src="https://avatars.githubusercontent.com/u/8666134?v=4?s=100" width="100px;" alt="Tobias Wölfel"/><br /><sub><b>Tobias Wölfel</b></sub></a><br /><a href="https://github.com/CopilotC-Nvim/CopilotChat.nvim/commits?author=towoe" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/garcia5"><img src="https://avatars.githubusercontent.com/u/21695295?v=4?s=100" width="100px;" alt="Alexander Garcia"/><br /><sub><b>Alexander Garcia</b></sub></a><br /><a href="https://github.com/CopilotC-Nvim/CopilotChat.nvim/commits?author=garcia5" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/kharandziuk"><img src="https://avatars.githubusercontent.com/u/3404755?v=4?s=100" width="100px;" alt="Max Kharandziuk"/><br /><sub><b>Max Kharandziuk</b></sub></a><br /><a href="https://github.com/CopilotC-Nvim/CopilotChat.nvim/commits?author=kharandziuk" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/pxwg"><img src="https://avatars.githubusercontent.com/u/149765160?v=4?s=100" width="100px;" alt="Xinyu Xiang"/><br /><sub><b>Xinyu Xiang</b></sub></a><br /><a href="https://github.com/CopilotC-Nvim/CopilotChat.nvim/commits?author=pxwg" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/junqizhang"><img src="https://avatars.githubusercontent.com/u/22600124?v=4?s=100" width="100px;" alt="junqizhang"/><br /><sub><b>junqizhang</b></sub></a><br /><a href="https://github.com/CopilotC-Nvim/CopilotChat.nvim/commits?author=junqizhang" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://card.calumhub.xyz"><img src="https://avatars.githubusercontent.com/u/89159592?v=4?s=100" width="100px;" alt="Calum Lynch"/><br /><sub><b>Calum Lynch</b></sub></a><br /><a href="https://github.com/CopilotC-Nvim/CopilotChat.nvim/commits?author=Tlunch" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>

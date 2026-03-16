@@ -39,6 +39,7 @@ local function match_block_header(header)
   end
 
   local patterns = {
+    '^(%w+)%s+path=(.-)%s+start_line=(%d+)%s+end_line=(%d+)$',
     '^(%w+)%s+path=(%S+)%s+start_line=(%d+)%s+end_line=(%d+)$',
     '^(%w+)$',
   }
@@ -734,7 +735,7 @@ function Chat:parse()
     message.content = vim.trim(table.concat(message.content, '\n'))
     if message.section then
       for _, block in ipairs(message.section.blocks) do
-        block.content = vim.trim(table.concat(block.content, '\n'))
+        block.content = table.concat(block.content, '\n')
       end
     end
 
@@ -770,6 +771,9 @@ function Chat:render()
       -- Overlay section header with nice display
       local header_value = self.headers[message.role]
       local header_line = message.section.start_line - 2
+      if message.model then
+        header_value = header_value .. ' (' .. message.model .. ')'
+      end
 
       vim.api.nvim_buf_set_extmark(self.bufnr, highlight_ns, header_line, 0, {
         conceal = '',
