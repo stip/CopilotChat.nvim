@@ -13,7 +13,7 @@ else ifeq ($(UNAME), Windows_NT)
 else ifneq ($(findstring MSYS_NT,$(UNAME)),)
     OS := windows
     EXT := dll
-else ifeq ($(UNAME), MINGW64_NT-10.0-22631)
+else ifeq ($(UNAME), MINGW64_NT-10.0-26200)
     OS := windows
     EXT := dll
 else
