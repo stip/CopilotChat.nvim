@@ -54,6 +54,8 @@
 ---@field functions table<string, CopilotChat.config.functions.Function>?
 ---@field prompts table<string, CopilotChat.config.prompts.Prompt|string>?
 ---@field mappings CopilotChat.config.mappings?
+---@field github_instance_url string?
+---@field github_instance_api_url string?
 return {
 
   -- Shared config starts here (can be passed to functions at runtime and configured via setup function)
@@ -114,6 +116,9 @@ return {
 
   selection = 'visual', -- Selection source
   chat_autocomplete = true, -- Enable chat autocompletion (when disabled, requires manual `mappings.complete` trigger)
+
+  github_instance_url = 'bbraun.ghe.com',
+  github_instance_api_url = 'api.bbraun.ghe.com',
 
   log_path = vim.fn.stdpath('state') .. '/CopilotChat.log', -- Default path to log file
   history_path = vim.fn.stdpath('data') .. '/copilotchat_history', -- Default path to stored history
